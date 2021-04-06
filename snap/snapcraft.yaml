@@ -1,6 +1,5 @@
 name: sosumi
 base: core18
-assumes: 2.43
 version: '0.666'
 summary: Download and install macOS in a VM
 description: |
@@ -41,6 +40,7 @@ apps:
       - unity7
       - wayland
       - desktop
+      - removable-media
 
 parts:
   sosumi:
@@ -138,6 +138,10 @@ parts:
       - seabios
       - ttf-ubuntu-font-family
       - cpu-checker
+      - liborc-0.4-0
+      - libgstreamer-plugins-base1.0-0
+      - libtdb1
+      - libgstreamer1.0-0
   desktop-glib-only:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: glib-only
