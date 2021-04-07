@@ -49,8 +49,8 @@ parts:
     plugin: dump
     source: snap/local
     stage-packages:
-      - python3-requests  # needed to fetch-macos
-      - python3-click     # needed to fetch-macos
+      - python3-requests  # needed to fetch_macos
+      - python3-click     # needed to fetch_macos
       - yad               # to do dialogs
       - dmg2img           # needed to convert mac dmg files
       #- qemu-utils        # for qemu-img etc

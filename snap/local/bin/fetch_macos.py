@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-"""fetch-macos.py: Fetches macOS products from Apple's SoftwareUpdate service."""
+"""fetch_macos.py: Fetches macOS products from Apple's SoftwareUpdate service."""
 
 import logging
 import plistlib
