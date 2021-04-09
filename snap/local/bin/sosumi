@@ -32,7 +32,32 @@ fi
 
 echo "*** Checking for disk image"
 if [ ! -f "$SNAP_USER_COMMON"/macos.qcow2 ]; then
-	qemu-img create -f qcow2 "$SNAP_USER_COMMON"/macos.qcow2 64G
+    echo "*** There is no virtaul disk"
+    echo "*** Creating virtual disk"
+	read -p "Select disk memory in Gigabytes [64]: " disk_mem
+    if ! [[ "$disk_mem" =~ ^[0-9]+$ ]]; then
+        disk_mem=64
+    fi
+	echo "Using: $disk_mem Gigabytes"
+	qemu-img create -f qcow2 "$SNAP_USER_COMMON"/macos.qcow2 ${disk_mem}G
+fi
+
+echo "*** Checking for machine config"
+if [ ! -f "$SNAP_USER_COMMON/machine_config" ]; then
+    echo "*** There is no config"
+    echo "*** Creating config file"
+    read -p "RAM memory [2]: " ram_mem
+    if ! [[ "$ram_mem" =~ ^[0-9]+$ ]]; then
+        ram_mem=2
+    fi
+    echo "Using: $ram_mem Gigabytes RAM"
+    echo "ram_mem=$ram_mem" > "$SNAP_USER_COMMON/machine_config"
+    read -p "CPU cores [2]: " cpu_cores
+    if ! [[ "$cpu_cores" =~ ^[0-9]+$ ]]; then
+        cpu_cores=2
+    fi
+    echo "Using: $cpu_cores CPU cores"
+    echo "cpu_cores=$cpu_cores" >> "$SNAP_USER_COMMON/machine_config"
 fi
 
 echo "*** Checking for launch script"
@@ -51,12 +76,12 @@ echo "*** Check if installer has been run"
 # On my machine a basic qcow is 262192 bytes, but let's put a buffer of 2x that
 qcowfilesize=$(stat -c %s "$SNAP_USER_COMMON"/macos.qcow2)
 if [ $qcowfilesize -gt 524384 ]; then
-  echo "*** Looks like the install was done, launching"
-  echo "*** Launch!"
-  exec "$SNAP_USER_COMMON"/launch
+    echo "*** Looks like the install was done, launching"
+    echo "*** Launch!"
+    exec "$SNAP_USER_COMMON"/launch
 else
-  echo "*** Looks like the install hasn't been done yet, lets install"
-  echo "*** Install!"
-  exec "$SNAP_USER_COMMON"/install
+    echo "*** Looks like the install hasn't been done yet, lets install"
+    echo "*** Install!"
+    exec "$SNAP_USER_COMMON"/install
 fi
 
